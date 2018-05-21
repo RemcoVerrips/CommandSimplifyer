@@ -13,7 +13,7 @@ In this tutorial im using [PermissionEX](https://dev.bukkit.org/projects/permiss
 ### Step 1. Add de jar to your project
 
 #### Option 1. Gradle (highly recommended)
-1. Download the jar file from <url>
+1. [Download](https://github.com/RemcoVerrips/CommandSimplifyer/releases/) the latest release
 2. Create a folder called ```libs``` in the root folder of gradle
 3. Add the jar in ```build.gradle``` file
 ```gradle
@@ -25,7 +25,7 @@ dependencies {
 <TRY>
 
 #### Option 3.  add as Library in Intellij IDEA
-1. Download the jar file from <url>
+1. [Download](https://github.com/RemcoVerrips/CommandSimplifyer/releases/) the latest release
 2. Create a folder called ```libs``` in the root folder of gradle
 3. Open Intellij IDEA and go to File → Product Structure... → Libraries
 4. Click on the green ```+```  icon and choose ```Java``` 
