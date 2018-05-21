@@ -1,0 +1,43 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+group = 'me.darkrossi'
+version = '0.5'
+description = 'CommandSimplifyer'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+final def BukkitBuildVersion = '1.12.2-R0.1-SNAPSHOT'
+
+
+//Build directory
+tasks.withType(Jar) {
+    destinationDir = file("D:\\Remco\\Documents\\Development")
+}
+
+repositories {
+
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/groups/public/'
+    }
+}
+dependencies {
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: BukkitBuildVersion
+    compileOnly group: 'org.bukkit', name: 'bukkit', version: BukkitBuildVersion
+    compileOnly group: 'org.bukkit', name: 'craftbukkit', version: BukkitBuildVersion
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Another bukkit/spigotmc plugin',
+                'Implementation-Version': version,
+                'Main-Class': group + "." + description + "." + description
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
