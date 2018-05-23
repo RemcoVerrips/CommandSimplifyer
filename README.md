@@ -22,7 +22,26 @@ dependencies {
 }
 ```
 #### Option 2. Maven
-<TRY>
+1. [Download](https://github.com/RemcoVerrips/CommandSimplifyer/releases/) the latest release
+2. Add the jar to the ```resource``` folder
+3. Add the dependency to the ```pom.xml```
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    ...
+    <dependencies>
+        <dependency>
+            <groupId>me.darkrossi</groupId>
+            <artifactId>commands</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/CommandSimplifyer-1.0.jar</systemPath>
+        </dependency>
+    </dependencies>
+</project>
+
+```
 
 #### Option 3.  add as Library in Intellij IDEA
 1. [Download](https://github.com/RemcoVerrips/CommandSimplifyer/releases/) the latest release
@@ -71,23 +90,23 @@ There are 4 things u can to do:
 
 ##### example:
 ```java
-    private void commandRegisterPex() {
-        // Arguments
-        CommandArgument userArgument = new CommandArgument("user", 1, true);
-        CommandArgument groupArgument = new CommandArgument("group", 1, true);
+private void commandRegisterPex() {
+    // Arguments
+    CommandArgument userArgument = new CommandArgument("user", 1, true);
+    CommandArgument groupArgument = new CommandArgument("group", 1, true);
 
-        // (Sub)Commands
-        CommandTree<String> pex = new CommandTree<>("pex", new PexCommand());
-        CommandTree<String> pexUser = new CommandTree<>("user", new PexUserCommand(), userArgument);
-        CommandTree<String> pexUserGroup = new CommandTree<>("group", new PexUserGroupCommand(), groupArgument);
-        CommandTree<String> pexGroup = new CommandTree<>("group", new PexGroupCommand(), groupArgument);
+    // (Sub)Commands
+    CommandTree<String> pex = new CommandTree<String>("pex", new PexCommand());
+    CommandTree<String> pexUser = new CommandTree<String>("user", new PexUserCommand(), userArgument);
+    CommandTree<String> pexUserGroup = new CommandTree<String>("group", new PexUserGroupCommand(), groupArgument);
+    CommandTree<String> pexGroup = new CommandTree<String>("group", new PexGroupCommand(), groupArgument);
 
-        // Set Child's
-        pex.addChild(pexUser);
-        pex.addChild(pexGroup);
-        pexUser.addChild(pexUserGroup);
+    // Set Child's
+    pex.addChild(pexUser);
+    pex.addChild(pexGroup);
+    pexUser.addChild(pexUserGroup);
 
-        // Initialize Commands
-        new CommandHandler(pex);
-    }
+    // Initialize Commands
+    new CommandHandler(pex);
+}
 ```
