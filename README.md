@@ -10,7 +10,7 @@ This lightweight library makes it possible to give every command its own ```clas
 In this tutorial im using [PermissionEX](https://dev.bukkit.org/projects/permissionsex) as example (not all commands are 100% pex (some are simplified))
 
 
-### Step 1. Add de jar to your project
+## Step 1. Add de jar to your project
 
 #### Option 1. Gradle (highly recommended)
 1. [Download](https://github.com/RemcoVerrips/CommandSimplifyer/releases/) the latest release
@@ -51,7 +51,7 @@ dependencies {
 5. Browse to the place where u saved the jar (<rootfolder>/libs)
 6. Make sure that u include the code to the final jar file!
 
-### Step 2. Define the Commands 
+## Step 2. Define the Commands 
 First u have to create a CommandClass for example ```PexCommand``` (i use <command name>Command as nameing convention for my command classes).
 
 requirements class:
@@ -67,10 +67,10 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class PexCommand implements ICommand {
+public class PexUserCommand implements ICommand {
 
     public Boolean onCommand(Player player, HashMap<String, String> args) {
-        player.sendMessage("pex command");
+        player.sendMessage(args.get("user")); //"user" is the defined name argument from step 3.
         return true;
     }
 
@@ -80,7 +80,7 @@ public class PexCommand implements ICommand {
 }
 ```
 
-#### Step 3. Register the commands
+### Step 3. Register the commands
 
 There are 4 things u can to do:
 - Create commands
