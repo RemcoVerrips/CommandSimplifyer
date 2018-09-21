@@ -3,20 +3,12 @@ package me.darkrossi.commands;
 public class CommandArgument {
 
     private String argument;
-    private int min;
-    private int max = 2;
+    private boolean sentence;
     private boolean required;
 
-    public CommandArgument(String argument, int min, boolean required){
+    public CommandArgument(String argument, boolean sentence, boolean required){
         this.argument = argument;
-        this.min = min;
-        this.required = required;
-    }
-
-    public CommandArgument(String argument, int min, int max, boolean required){
-        this.argument = argument;
-        this.min = min;
-        this.max = max;
+        this.sentence = sentence;
         this.required = required;
     }
 
@@ -24,11 +16,12 @@ public class CommandArgument {
         return required;
     }
 
+    public boolean isSentence() {
+        return sentence;
+    }
+
     public String getArgument() {
         return argument;
     }
 
-    public int argumentLength(){
-        return max-min;
-    }
 }

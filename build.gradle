@@ -2,18 +2,21 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 group = 'me.darkrossi'
-version = '0.5'
-description = 'CommandSimplifyer'
+version = '1.1'
+description = 'CommandSimplifyerAPI'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-final def BukkitBuildVersion = '1.12.2-R0.1-SNAPSHOT'
+
+buildscript {
+    ext.bukkit_version = "1.13.1-R0.1-SNAPSHOT"
+}
 
 
 //Build directory
 tasks.withType(Jar) {
-    destinationDir = file("D:\\Remco\\Documents\\Development")
+    destinationDir = file("D:\\Series\\Remco\\Documents\\SurvivalPub\\plugins")
 }
 
 repositories {
@@ -25,9 +28,9 @@ repositories {
     }
 }
 dependencies {
-    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: BukkitBuildVersion
-    compileOnly group: 'org.bukkit', name: 'bukkit', version: BukkitBuildVersion
-    compileOnly group: 'org.bukkit', name: 'craftbukkit', version: BukkitBuildVersion
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: "$bukkit_version"
+    compileOnly group: 'org.bukkit', name: 'bukkit', version: "$bukkit_version"
+    compileOnly group: 'org.bukkit', name: 'craftbukkit', version: "$bukkit_version"
 }
 
 task fatJar(type: Jar) {

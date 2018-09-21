@@ -10,11 +10,18 @@ public class CommandTree<T> {
     private T name = null;
     private ICommand command = null;
     private CommandArgument arg = null;
-    private List<String> args = null;
+    private List<CommandArgument> args = null;
+    private String permission = null;
 
     public CommandTree(T name, ICommand command) {
         this.name = name;
         this.command = command;
+    }
+
+    public CommandTree(T name, ICommand command, String permission) {
+        this.name = name;
+        this.command = command;
+        this.permission = permission;
     }
 
     public CommandTree(T name, ICommand command, CommandArgument argument) {
@@ -23,10 +30,26 @@ public class CommandTree<T> {
         this.arg = argument;
     }
 
-    public CommandTree(T name, ICommand command, List<String> args) {
+    public CommandTree(T name, ICommand command, CommandArgument argument, String permission) {
+        this.name = name;
+        this.command = command;
+        this.arg = argument;
+        this.permission = permission;
+    }
+
+    // Not implemented yet
+    public CommandTree(T name, ICommand command, List<CommandArgument> args) {
         this.name = name;
         this.command = command;
         this.args = args;
+    }
+
+    // Not implemented yet
+    public CommandTree(T name, ICommand command, List<CommandArgument> args, String permission) {
+        this.name = name;
+        this.command = command;
+        this.args = args;
+        this.permission = permission;
     }
 
     public List<CommandTree<T>> getChildren() {
@@ -49,8 +72,21 @@ public class CommandTree<T> {
     }
 
     public CommandArgument getArg() {
+        if(this.args != null){
+            return this.args.get(0);
+        }
+
         return this.arg;
     }
+
+    public CommandArgument getArg(int size) {
+        if(this.args != null){
+            return this.args.get(size);
+        }
+
+        return this.arg;
+    }
+
 
     public ICommand getCommand() {
         return command;
@@ -66,5 +102,22 @@ public class CommandTree<T> {
 
     public void removeParent() {
         this.parent = null;
+    }
+
+    public int argumentSize(){
+        if(this.args != null) {
+            return this.args.size();
+        } else {
+            if(this.arg != null){
+                return 1;
+            }
+        }
+
+        return 0;
+    }
+
+
+    public String getPermissison(){
+        return this.permission;
     }
 }

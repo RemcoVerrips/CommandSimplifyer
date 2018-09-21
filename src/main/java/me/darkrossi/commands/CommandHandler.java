@@ -16,7 +16,6 @@ public class CommandHandler implements CommandExecutor {
     private HashMap<String, String> arguments;
 
     /**
-     *
      * @param cmd
      */
     public CommandHandler(CommandTree cmd) {
@@ -25,7 +24,6 @@ public class CommandHandler implements CommandExecutor {
     }
 
     /**
-     *
      * @param player
      */
     private void setPlayer(Player player) {
@@ -33,7 +31,6 @@ public class CommandHandler implements CommandExecutor {
     }
 
     /**
-     *
      * @return
      */
     private Player getPlayer() {
@@ -41,7 +38,6 @@ public class CommandHandler implements CommandExecutor {
     }
 
     /**
-     *
      * @param sender
      * @param command
      * @param label
@@ -56,59 +52,80 @@ public class CommandHandler implements CommandExecutor {
         } else {
             this.setPlayer((Player) sender);
             checkArguments(args, this.cmd);
+
         }
 
         return true;
     }
 
     /**
-     *
      * @param args
      * @param cmd
      */
     private void checkArguments(String[] args, CommandTree cmd) {
-        if (cmd.hasArgs() && cmd.getArg().isRequired()) {
-            argumentFilter(args, cmd);
-        } else {
-            if (args.length > 0) {
-                this.findChild(cmd, args);
+        if (player.hasPermission(cmd.getPermissison())) {
+            if (cmd.hasArgs() && cmd.getArg().isRequired()) {
+                if(cmd.argumentSize() > 1){
+                    for(int i =0; i < cmd.argumentSize(); i++){
+                        if(!cmd.getArg(i).isSentence()) {
+                            this.arguments.put(cmd.getArg(i).getArgument(), args[i]);
+                        } else {
+                            String sentence = "";
+                            for(int j = i; j < args.length; j++){
+                                sentence += args[j] + " ";
+                            }
+
+                            this.arguments.put(cmd.getArg(i).getArgument(), sentence.trim());
+                            this.executeCommand(cmd);
+                        }
+                    }
+                }
+                argumentFilter(args, cmd);
             } else {
-                this.executeCommand(cmd);
+                if (args.length > 0) {
+                    this.findChild(cmd, args);
+                } else {
+                    this.executeCommand(cmd);
+                }
             }
+        } else {
+            this.executeNoPermission();
         }
     }
 
     /**
-     *
      * @param cmd
      */
-    private void executeCommand(CommandTree cmd){
+    private void executeCommand(CommandTree cmd) {
         cmd.getCommand().onCommand(this.getPlayer(), this.arguments);
     }
 
     /**
-     *
      * @param cmd
      */
-    private void executeMissingArguments(CommandTree cmd){
-        cmd.getCommand().missingArguments(this.getPlayer(), "example");
+    private void executeMissingArguments(CommandTree cmd, String missingArg) {
+        cmd.getCommand().missingArguments(this.getPlayer(), missingArg);
+    }
+
+    private void executeNoPermission() {
+        cmd.getCommand().noPermission(this.player);
     }
 
     /**
-     *
      * @param args
      * @param cmd
      */
-    private void argumentFilter(String[] args, CommandTree cmd){
+    private void argumentFilter(String[] args, CommandTree cmd) {
         if (args.length > 0) {
             if (args.length < 2) {
+                this.arguments.put(cmd.getArg().getArgument(), args[0]);
                 this.executeCommand(cmd);
             } else {
                 this.findChild(cmd, args);
             }
         } else {
             if (cmd.getArg().isRequired()) {
-                this.executeMissingArguments(cmd);
+                this.executeMissingArguments(cmd, cmd.getArg().getArgument());
             } else {
                 this.executeCommand(cmd);
             }
@@ -116,29 +133,30 @@ public class CommandHandler implements CommandExecutor {
     }
 
     /**
-     *
      * @param cmd
      * @param args
      */
     private void findChild(CommandTree cmd, String[] args) {
         List children = cmd.getChildren();
-        for(int i = 0; i < children.size(); i++){
+        for (int i = 0; i < children.size(); i++) {
             CommandTree child = (CommandTree) children.get(i);
-            if (cmd.hasArgs()) {
-                if (child.getName().equalsIgnoreCase(args[1])) {
-                    this.arguments.put(cmd.getArg().getArgument(), args[0]);
-                    this.checkArguments(this.subList(args, 2), child);
+
+            if (args[0].equals(child.getName())) {
+                if (cmd.hasArgs()) {
+                    if (child.getName().equalsIgnoreCase(args[1])) {
+                        this.arguments.put(cmd.getArg().getArgument(), args[0]);
+                        this.checkArguments(this.subList(args, 2), child);
+                        break;
+                    }
+                } else {
+                    this.checkArguments(this.subList(args, 1), child);
                     break;
                 }
-            } else {
-                this.checkArguments(this.subList(args, 1), child);
-                break;
             }
         }
     }
 
     /**
-     *
      * @param args
      * @param shrinkSize
      * @return
